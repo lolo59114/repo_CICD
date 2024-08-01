@@ -9,10 +9,10 @@ jobs:
     permissions:
       issues: write
     steps:
-      - run: gh issue comment $ISSUE_URL --body "Bonjour $AUTHOR ! Nous avons bien pris en compte votre problème du nom de ':' $TITLE"
+      - run: 'gh issue comment $ISSUE_URL --body "Bonjour $AUTHOR ! Nous avons bien pris en compte votre problème du nom de : $TITLE"'
         env:
           # Récupération de notre token pour s'authentifier
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
-          AUTHOR: ${{ github.event.issue.author }}
+          AUTHOR: ${{ github.event.issue.author_association }}
           TITLE: ${{ github.event.issue.title }}
