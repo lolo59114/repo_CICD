@@ -1,0 +1,8 @@
+name: Git fork workflow
+on: fork
+jobs:
+    show_message:
+        runs-on: ubuntu-latest
+        steps:
+          - run: echo "un fork a été effectué"
+
