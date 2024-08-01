@@ -9,7 +9,7 @@ jobs:
     permissions:
       issues: write
     steps:
-      - run: gh issue comment $ISSUE_URL --body "Bonjour $AUTHOR ! \n Nous avons bien pris en compte votre problème du nom de : $TITLE "
+      - run: gh issue comment $ISSUE_URL --body "Bonjour $AUTHOR ! Nous avons bien pris en compte votre problème du nom de ':' $TITLE"
         env:
           # Récupération de notre token pour s'authentifier
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
