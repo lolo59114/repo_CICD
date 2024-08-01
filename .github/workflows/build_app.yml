@@ -1,0 +1,18 @@
+name: Build Spring app
+on: push
+jobs:
+    premier-job:
+        name: Build and run Spring app
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Spring app
+              uses: actions/checkout@v4
+            - name: Set up JDK
+              uses: actions/setup-java@v4
+              with:
+                java-version: '17'
+                distribution: 'adopt'
+            - name: Build with Maven
+              run: mvn -f pom.xml clean package
+            - name: Show contents of the target directory
+              run: ls -la target
