@@ -1,0 +1,10 @@
+name: Premier workflow
+on: workflow_dispatch
+jobs:
+    premier-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Dit bonjour
+              run: echo "Hello"
+            - name: Dit au revoir
+              run: echo "Good bye"
