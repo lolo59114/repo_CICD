@@ -15,7 +15,8 @@ public class TodoService {
     public TodoService() {
          todos = List.of(
                 new Todo(1, "Getter", "Déjà fini", true),
-                new Todo(2, "Setter", "A faire", false)
+                new Todo(2, "Setter", "A faire", false),
+                new Todo(3, "ToString", "A faire", false)
                 );
     }
 
