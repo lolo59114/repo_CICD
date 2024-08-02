@@ -5,28 +5,52 @@ on:
       - main
       - dev
 jobs:
-    premier-job:
-        name: Build and run Spring app
-        runs-on: ubuntu-latest
-        steps:
-            - name: Get Spring app
-              uses: actions/checkout@v4
-            - name: Set up JDK
-              uses: actions/setup-java@v4
-              with:
-                java-version: '17'
-                distribution: 'adopt'
-            - name: Cache Maven dependencies
-              uses: actions/cache@v4
-              with:
-                path: ~/.m2/repository
-                key: ${{ runner.os }}-m2-repository-${{ hashFiles('**/pom.xml') }}
-            - name: Build with Maven
-              run: mvn -f pom.xml clean package
-            - name: Show contents of the target directory
-              run: ls -la target
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
-              with:
-                name: mon_app
-                path: target/*.jar
+    spring-job:
+      name: Build and run Spring app
+      runs-on: ubuntu-latest
+      steps:
+          - name: Get Spring app
+            uses: actions/checkout@v4
+          - name: Set up JDK
+            uses: actions/setup-java@v4
+            with:
+              java-version: '17'
+              distribution: 'adopt'
+          - name: Cache Maven dependencies
+            uses: actions/cache@v4
+            with:
+              path: ~/.m2/repository
+              key: ${{ runner.os }}-m2-repository-${{ hashFiles('**/pom.xml') }}
+          - name: Build with Maven
+            run: mvn -f pom.xml clean package
+          - name: Show contents of the target directory
+            run: ls -la target
+            continue-on-error: false
+          - name: Upload artifact
+            if: ${{ github.ref == 'refs/heads/main' }}
+            uses: actions/upload-artifact@v4
+            with:
+              name: mon_app
+              path: target/*.jar
+    docker-job:
+      name: Create a docker container and push on docker hub
+      needs: spring-job
+      if: ${{ github.ref == 'refs/heads/main' }}
+      env:
+        $USERNAME: ${{ secrets.DOCKER_HUB_LOGIN }}
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+  
+        - name: Login docker hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKER_HUB_LOGIN }}
+            password: ${{ secrets.DOCKER_HUB_PWD }}
+  
+        - name: Build docker image
+          run: docker build -t $USERNAME/my_spring_app .
+  
+        - name: Push docker image
+          run: docker push $USERNAME/my_spring_app
