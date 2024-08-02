@@ -37,7 +37,7 @@ jobs:
       needs: spring-job
       if: ${{ github.ref == 'refs/heads/main' }}
       env:
-        $USERNAME: ${{ secrets.DOCKER_HUB_LOGIN }}
+        USERNAME: ${{ secrets.DOCKER_HUB_LOGIN }}
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
