@@ -7,5 +7,5 @@ RUN mvn package -DskipTests
 FROM openjdk
 WORKDIR /app
 COPY --from=builder /app/target/Spring_exercice1-0.0.1-SNAPSHOT.jar .
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","Spring_exercice1-0.0.1-SNAPSHOT.jar"]
